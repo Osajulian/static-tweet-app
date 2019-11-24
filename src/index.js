@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import './index.css';
 
 const Tweet = ({ tweet }) => {
@@ -82,5 +83,47 @@ const LikeButton = ({ count }) => (
 const MoreOptionsButton = () => (
   <i className="fa fa-ellipsis-h more-options-button" />
 );
+
+LikeButton.propTypes = {
+  count: PropTypes.number
+};
+
+RetweetButton.propTypes = {
+  count: PropTypes.number
+};
+
+Message.propTypes = {
+  count: PropTypes.string
+};
+
+Time.propTypes = {
+  count: PropTypes.string
+};
+Avatar.propTypes = {
+  count: PropTypes.string
+};
+
+Author.propTypes = {
+  author: PropTypes.shape({
+    handle: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired
+};
+
+// It’s also good to follow the DRY (Don’t Repeat Yourself) principle.
+// If you have an explicit object shape required in one place, for instance
+//  in Author, there’s little value in duplicating the shape in the parent
+// Tweet component. If the shape of author changes some day, there will be
+// two places to update code. Having that second check doesn’t buy you anything,
+// and instead, could actually cost you time in the future.
+Tweet.propTypes = {
+  tweet: PropTypes.shape({
+    message: PropTypes.string.isRequired,
+    gravatar: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      handle: PropTypes.string.isRequired
+    })
+  }).isRequired
+};
 
 ReactDOM.render(<Tweet tweet={testTweet} />, document.querySelector('#root'));
